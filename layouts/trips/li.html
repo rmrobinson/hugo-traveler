@@ -1,0 +1,19 @@
+<div class="list-entry"
+    onmouseover="selectElements({{ .Params.trip.visited_labels }}, {{ .Parent.Params.map.highlight_element_colour }}, {{ .Parent.Params.map.set_stroke_and_fill }})"
+    onmouseout="deselectElements({{ .Params.trip.visited_labels }}, {{ .Parent.Params.map.set_stroke_and_fill}})">
+    {{ with .Resources.GetMatch "summary" }}
+    <div class="list-entry-image">
+        {{ $summaryScaled := .Resize "x125" }}
+        <img src="{{ $summaryScaled.Permalink }}">
+    </div>
+    {{ end }}
+    <div class="list-entry-content">
+        <div>
+            <h3>{{ .Date.Format "January 2006" }}: {{ .Title }}</h3>
+            <p>{{ .Summary }}</p>
+        </div>
+        <aside>
+            <a href='{{ .Permalink }}'><nobr>Read more →</nobr></a>
+        </aside>
+    </div>
+</div>

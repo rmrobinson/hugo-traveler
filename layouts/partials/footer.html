@@ -1,0 +1,13 @@
+<footer class=footer>
+    <div class=footer_text>
+        <div>
+            <h4>Hi, I'm {{ .Site.Author.handle }}</h4>
+            <p>
+            {{ partial "bio.html" . }}
+            </p>
+        </div>
+    </div>
+    <div class=footer_copyright>
+        &copy; {{ now.Format "2006" }} <a href={{ .Site.BaseURL }}/about>{{ .Site.Author.name }}</a> - Made with love in {{ .Site.Author.location }}
+    </div>
+</footer>

@@ -1,0 +1,12 @@
+baseURL = "http://example.org/"
+languageCode = "en-us"
+title = "Example Traveler Site"
+theme = "hugo-traveler"
+
+[params]
+    description = "This is the description of this site"
+
+[author]
+   handle = "exampleHandle"
+   name = "Test Author"
+   location = "Somewhere, CA"

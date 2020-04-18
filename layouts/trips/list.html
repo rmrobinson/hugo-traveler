@@ -1,0 +1,79 @@
+{{ define "main" }}
+<main>
+    <article>
+        <header>
+            <h1>{{.Title}}</h1>
+        </header>
+        <!-- "{{.Content}}" pulls from the markdown content of the corresponding _index.md -->
+        <div class=text>
+            {{ .Content }}
+        </div>
+    </article>
+    <nav class="list-map">
+    <div class="map">
+        {{ with .Params.Map }}
+            <script src="/js/svg-inject.min.js"></script>
+            <script>
+                    SVGInject.setOptions({makeIdsUnique: false});
+                    var defaultStrokeValues = {};
+                    var defaultFillValues = {};
+
+                    function selectElements(ids, selectedColour, setStrokeAndFill) {
+                        ids.forEach(function (id) {
+                            elem = document.getElementById(id)
+                            if (elem === null) {
+                                return;
+                            }
+                            if (setStrokeAndFill) {
+                                defaultStrokeValues[id] = elem.getAttribute("stroke");
+                                elem.setAttribute("stroke", selectedColour);
+                            }
+                            defaultFillValues[id] = elem.getAttribute("style");
+                            elem.setAttribute("style", "fill:" + selectedColour);
+                        });
+                    };
+                    function deselectElements(ids, setStrokeAndFill) {
+                        ids.forEach(function (id) {
+                            elem = document.getElementById(id);
+                            if (elem === null) {
+                                return;
+                            }
+                            var defaultStrokeValue = defaultStrokeValues[id];
+                            if (setStrokeAndFill && defaultFillValue !== "") {
+                                elem.setAttribute("stroke", defaultStrokeValue);
+                            }
+                            elem.setAttribute("style", defaultFillValues[id]);
+                        });
+                    };
+            </script>
+            <img src="/{{ .file }}" onload="SVGInject(this)"/>
+        {{ else }}
+            <script>
+                // Do nothing we if we have no map to load
+                function selectElements(ids) {};
+                function deselectElements(ids) {};
+            </script>
+        {{ end }}
+    </div>
+    <div class="list-entries">
+        <!-- Ranges through all trip sections -->
+        {{ range .Sections.ByDate.Reverse }}
+            {{ .Render "li" }}
+        {{ end }}
+        <!-- Ranges through all pages of a given trip section -->
+        {{ range .Pages.ByDate }}
+            {{ .Render "li" }}
+        {{ end }}
+    </div>
+    </nav>
+</main>
+{{ if eq .Parent.Section "trips" }}
+<nav class=nav-footer>
+    <div class=center>
+        {{ with .Parent }}
+        <a href="{{.Permalink}}"> {{.Title}}</a>
+        {{ end }}
+    </div>
+</nav>
+{{ end }}
+{{ end }}

@@ -1,0 +1,13 @@
+name = "Traveler"
+license = "MIT"
+licenselink = "https://github.com/rmrobinson/hugo-traveler/blob/master/LICENSE"
+description = "A travel-focused blog theme"
+homepage = "https://github.com/rmrobinson/hugo-traveler"
+tags = []
+features = []
+min_version = "0.41"
+
+[author]
+  name = "Robert Robinson"
+  homepage = "http://blog.rmrobinson.ca"
+
