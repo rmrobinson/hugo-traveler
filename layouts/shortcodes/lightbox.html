@@ -1,0 +1,11 @@
+<div class="lightbox">
+    {{- $id := .Get "src" | path.Base -}}
+    <a href="#fig-{{$id}}" class="nolightbox">
+        <img src="{{.Get "src"}}" alt="{{.Get "title"}}" title="{{.Get "title"}}">
+        <figcaption>{{ .Get "title" -}}</figcaption>
+    </a>
+    <a href="#_" class="lightboxed" id="fig-{{$id}}">
+        <img src="{{.Get "src"}}">
+        <figcaption>{{ .Get "title" -}}</figcaption>
+    </a>
+</div>

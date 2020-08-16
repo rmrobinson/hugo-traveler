@@ -1,0 +1,10 @@
+<header class="site-header">
+    <div class="site-header-body">
+        <h1>{{ .Site.Title }}</h1>
+        <div class="site-header-menu">
+            {{ range .Site.Menus.main }}
+            <div class="site-header-menu-item"><a href={{ .URL }}><h4>{{ .Name }}</h4></a></div>
+            {{ end }}
+        </div>
+    </div>
+</header>

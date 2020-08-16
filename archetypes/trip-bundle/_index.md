@@ -3,7 +3,7 @@ title: "{{ replace .Name "-" " " | title }}"
 draft: true
 map:
   file: "trips/maps/<Country Map Name>.svg"
-  highlight_element_colour: "#C7DDDA"
+  highlight_element_colour: "#EDC7B4"
   set_stroke_and_fill: false
 trip:
   visited_labels:

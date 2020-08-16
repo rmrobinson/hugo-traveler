@@ -1,13 +1,7 @@
 {{ define "main" }}
 <main>
     <article>
-        <header>
-            <h1>{{.Title}}</h1>
-        </header>
-        <!-- "{{.Content}}" pulls from the markdown content of the corresponding _index.md -->
-        <div class=text>
-            {{ .Content }}
-        </div>
+        {{ .Content }}
     </article>
     <nav class="list-map">
     <div class="map">
@@ -46,7 +40,9 @@
                         });
                     };
             </script>
-            <img src="/{{ .file }}" onload="SVGInject(this)"/>
+            {{ range .files }}
+            <img src="/{{ . }}" onload="SVGInject(this)"/>
+            {{ end }}
         {{ else }}
             <script>
                 // Do nothing we if we have no map to load
@@ -67,13 +63,4 @@
     </div>
     </nav>
 </main>
-{{ if eq .Parent.Section "trips" }}
-<nav class=nav-footer>
-    <div class=center>
-        {{ with .Parent }}
-        <a href="{{.Permalink}}"> {{.Title}}</a>
-        {{ end }}
-    </div>
-</nav>
-{{ end }}
 {{ end }}

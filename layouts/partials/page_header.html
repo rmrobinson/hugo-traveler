@@ -1,0 +1,11 @@
+<header class="page-header">
+    <div>
+        {{ if ne .Kind "section" }}
+        <h3 id="title">{{ .Title }}</h3>
+
+        {{ if ne .Type "about" }}
+        <h4 id="date"> {{ .Date.Format "Mon Jan 2, 2006" }} </h4>
+        {{ end }}
+        {{ end}}
+    </div>
+</header>

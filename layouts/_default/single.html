@@ -1,17 +1,7 @@
 {{ define "main" }}
 <main>
     <article>
-        <header>
-            <div>
-                <h1 id="title">{{ .Title }}</h1>
-                {{ with .Date }}
-                <h4 id="date"> {{ .Format "Mon Jan 2, 2006" }} </h4>
-                {{ end }}
-            </div>
-        </header>
-        <div class=text>
         {{ .Content }}
-        </div>
     </article>
 </main>
 {{ end }}

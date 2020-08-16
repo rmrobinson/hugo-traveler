@@ -1,11 +1,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content = {{ .Site.Author.name }}>
+    <meta name="author" content = {{ .Site.Author.firstname }} {{ .Site.Author.lastname }}>
     <meta name="description" content = {{ .Site.Params.description }}>
 
     <link rel="stylesheet" href="{{ "css/normalize.css" | relURL}}" />
     <link rel="stylesheet" href="{{ "css/style.css" | relURL }}" />
+
+    {{ if .HasShortcode "map" }}
+    {{ end }}
 
     {{ if eq .Parent.Section "trips" }}
     <title>{{ .Parent.Title }}: {{ .Title }}</title>
