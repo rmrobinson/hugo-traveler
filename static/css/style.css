@@ -161,15 +161,28 @@ article > figure h4 {
     margin: 5px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     border-radius: 8px;
+    max-width: 240px;
+    overflow: hidden;
+}
+
+/*
+  We override the image to have it 'fill' out the above list entry if it isn't a perfect 4:3 aspect ratio
+  This will crop the image - this is preferrable to having whitespace in the image.
+*/
+.list-entry img {
+    object-fit: cover;
+    height: 100%;
 }
 
 @media only screen and (max-width:600px) {
     .list-entry {
-        height: 80px;
+        height: 90px;
         position: relative;
         margin: 5px;
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
         border-radius: 8px;
+        max-width: 120px;
+        overflow: hidden;
     }
     .list-entry-content p {
         display: none;

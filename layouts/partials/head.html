@@ -10,9 +10,9 @@
     {{ if .HasShortcode "map" }}
     {{ end }}
 
-    {{ if eq .Parent.Section "trips" }}
-    <title>{{ .Parent.Title }}: {{ .Title }}</title>
-    {{ else }}
+    {{ if not .Parent }}
     <title>{{ .Title }}</title>
+    {{ else }}
+    <title>{{ .Parent.Title }}: {{ .Title }}</title>
     {{ end }}
 </head>

@@ -5,6 +5,7 @@ trip:
   visited_labels:
   - "CA"
 summary: "Touring the western coast"
+header_image_path: "/trips/images/matthias-koch-drXP4PAy2eo-unsplash.jpg"
 ---
 
 This is where content for the second day can be found.

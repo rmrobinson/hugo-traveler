@@ -15,5 +15,11 @@
         <p>On to <a href="{{.Permalink}}">{{.Title}}</a></p>
         {{ end }}
     </div>
+{{ else if .Parent }}
+    <div class="center">
+        {{ with .Parent }}
+        <p>Return to <a href="{{.Permalink}}">{{.Title}}</a></p>
+        {{ end }}
+    </div>
 {{ end }}
 </nav>
