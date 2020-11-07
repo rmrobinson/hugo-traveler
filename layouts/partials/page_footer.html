@@ -1,0 +1,25 @@
+<nav class="page-footer">
+{{ if .IsPage }}
+    <div class="previous">
+        {{ with .PrevInSection }}
+        <p>Back to <a href="{{.Permalink}}">{{.Title}}</a></p>
+        {{ end }}
+    </div>
+    <div class="center">
+        {{ with .Parent }}
+        <p>Up to <a href="{{.Permalink}}">{{.Title}}</a></p>
+        {{ end }}
+    </div>
+    <div class="next">
+        {{ with .NextInSection }}
+        <p>On to <a href="{{.Permalink}}">{{.Title}}</a></p>
+        {{ end }}
+    </div>
+{{ else if .Parent }}
+    <div class="center">
+        {{ with .Parent }}
+        <p>Return to <a href="{{.Permalink}}">{{.Title}}</a></p>
+        {{ end }}
+    </div>
+{{ end }}
+</nav>

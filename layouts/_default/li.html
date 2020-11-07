@@ -1,0 +1,11 @@
+<div class="list-entry"
+    onmouseover="selectElements({{ .Params.trip.visited_labels }}, {{ .Parent.Params.map.highlight_element_colour }}, {{ .Parent.Params.map.set_stroke_and_fill }})"
+    onmouseout="deselectElements({{ .Params.trip.visited_labels }}, {{ .Parent.Params.map.set_stroke_and_fill}})">
+    <a href='{{ .Permalink }}'>
+    <img src="{{ .Params.header_image_path }}" />
+    <div class="list-entry-content">
+        <h4>{{ .Title }}</h4>
+        <p>{{ .Summary }}</p>
+    </div>
+    </a>
+</div>

@@ -1,10 +1,11 @@
 ---
 date: "2018-06-02"
-title: "Flying to Durban"
+title: "Day 2"
 trip:
   visited_labels:
   - "ZAF1926"
-summary: "Touring the eastern Cape after flying through Durban"
+summary: "Eastern Cape"
+header_image_path: "/trips/images/john-vicente-cLBsrzwoJ3w-unsplash.jpg"
 ---
 
 This is where content for the second day can be found.

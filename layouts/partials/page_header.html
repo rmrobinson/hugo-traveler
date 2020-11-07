@@ -1,0 +1,9 @@
+<header class="page-header">
+    <div>
+        <h3 id="title">{{ .Title }}</h3>
+
+        {{ if .IsPage }}
+        <h4 id="date"> {{ .Date.Format "Mon Jan 2, 2006" }} </h4>
+        {{ end}}
+    </div>
+</header>

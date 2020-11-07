@@ -7,6 +7,7 @@ theme = "hugo-traveler"
     description = "This is the description of this site"
 
 [author]
-   handle = "exampleHandle"
-   name = "Test Author"
-   location = "Somewhere, CA"
+   Handle = "exampleHandle"
+   FirstName = "Test"
+   LastName = "Author"
+   Location = "Somewhere, CA"
