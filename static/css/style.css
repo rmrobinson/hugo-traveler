@@ -215,6 +215,7 @@ article > figure h4 {
 .list-entry-content p {
     margin-top: 0px;
     margin-bottom: 5px;
+    padding-left: 0em;
     font-weight: 200;
     font-size: 14px;
 }

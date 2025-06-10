@@ -1,5 +1,5 @@
 <nav class="page-footer">
-{{ if .IsPage }}
+{{- if .IsPage -}}
     <div class="previous">
         {{ with .PrevInSection }}
         <p>Back to <a href="{{.Permalink}}">{{.Title}}</a></p>
@@ -15,11 +15,11 @@
         <p>On to <a href="{{.Permalink}}">{{.Title}}</a></p>
         {{ end }}
     </div>
-{{ else if .Parent }}
+{{- else if .Parent -}}
     <div class="center">
         {{ with .Parent }}
         <p>Return to <a href="{{.Permalink}}">{{.Title}}</a></p>
         {{ end }}
     </div>
-{{ end }}
+{{- end -}}
 </nav>
