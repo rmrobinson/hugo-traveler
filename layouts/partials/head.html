@@ -4,10 +4,18 @@
     <meta name="author" content = {{ .Site.Params.Author.firstname }} {{ .Site.Params.Author.lastname }}>
     <meta name="description" content = {{ .Site.Params.description }}>
 
-    <link rel="stylesheet" href="{{ "css/normalize.css" | relURL}}" />
+    <link rel="stylesheet" href="{{ "css/normalize.css" | relURL }}" />
     <link rel="stylesheet" href="{{ "css/style.css" | relURL }}" />
 
     {{ if .HasShortcode "map" }}
+    {{ end }}
+
+    {{ if .HasShortcode "lightbox" }}
+    <link rel="stylesheet" href="{{ "css/lightbox.css" | relURL }}" />
+    {{ end }}
+
+    {{ if .HasShortcode "photogallery" }}
+    <link rel="stylesheet" href="{{ "photoswipe/photoswipe.css" | relURL }}" />
     {{ end }}
 
     {{ if not .Parent }}
