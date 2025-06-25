@@ -1,0 +1,85 @@
+<!-- A gallery contains multiple images, potentially with captions, displayed full width on the screen -->
+<!-- Uses photoswipe to change between included images -->
+<div class="pswp-gallery photorow" id="test-gallery">
+    {{ .Inner -}}
+</div>
+
+<script type="module">
+import PhotoSwipeLightbox from '/photoswipe/photoswipe-lightbox.esm.js';
+
+const lightbox = new PhotoSwipeLightbox({
+    gallery: '#test-gallery',
+    children: 'a',
+    pswpModule: () => import('/photoswipe/photoswipe.esm.js')
+});
+
+// Parse data-pswp-webp-src attribute
+lightbox.addFilter('itemData', (itemData, index) => {
+  const webpSrc = itemData.element.dataset.pswpWebpSrc;
+  if (webpSrc) {
+    itemData.webpSrc = webpSrc;
+  }
+  return itemData;
+});
+
+// use <picture> instead of <img>
+lightbox.on('contentLoad', (e) => {
+    const { content, isLazy } = e;
+
+    if (content.data.webpSrc) {
+      // prevent to stop the default behavior
+      e.preventDefault();
+
+      content.pictureElement = document.createElement('picture');
+      
+      const sourceWebp = document.createElement('source');
+      sourceWebp.srcset = content.data.webpSrc;
+      sourceWebp.type = 'image/webp';
+
+      content.element = document.createElement('img');
+      content.element.src = content.data.src;
+      content.element.setAttribute('alt', '');
+      content.element.className = 'pswp__img';
+
+      content.pictureElement.appendChild(sourceWebp);
+      content.pictureElement.appendChild(content.element);
+
+      content.state = 'loading';
+
+      if (content.element.complete) {
+        content.onLoaded();
+      } else {
+        content.element.onload = () => {
+          content.onLoaded();
+        };
+
+        content.element.onerror = () => {
+          content.onError();
+        };
+      }
+    }
+});
+
+// by default PhotoSwipe appends <img>,
+// but we want to append <picture>
+lightbox.on('contentAppend', (e) => {
+  const { content } = e;
+  if (content.pictureElement && !content.pictureElement.parentNode) {
+    e.preventDefault();
+    content.slide.container.appendChild(content.pictureElement);
+  }
+});
+
+// for next/prev navigation with <picture>
+// by default PhotoSwipe removes <img>,
+// but we want to remove <picture>
+lightbox.on('contentRemove', (e) => {
+  const { content } = e;
+  if (content.pictureElement && content.pictureElement.parentNode) {
+    e.preventDefault();
+    content.pictureElement.remove();
+  }
+});
+
+lightbox.init();
+</script>

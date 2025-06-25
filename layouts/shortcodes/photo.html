@@ -1,0 +1,24 @@
+<!-- A photo is a single photo displayed with a caption underneath -->
+{{- $photoUrl := $.Get "url" }}
+{{- $photoAlt := $.Get "alt" }}
+{{- with try (resources.GetRemote $photoUrl) }}
+    {{ with .Err }}
+        {{ warnf "%s" . }}
+    {{ else with .Value }}
+        {{ $webpImg := .Process "webp" }}
+        {{ $thumbnailImg := .Resize "x400" }}
+
+        <a href="{{ $webpImg.RelPermalink }}"
+            data-pswp-width="{{ .Width }}"
+            data-pswp-height="{{ .Height }}"
+            data-pswp-webp-src="{{ $webpImg.RelPermalink }}"
+            target="_blank">
+            <picture>
+                <source srcset="{{ $webpImg.RelPermalink }}" type="image/webp" />
+                <img src="{{ $thumbnailImg.RelPermalink }}" loading="lazy" width="{{ $thumbnailImg.Width }}" height="{{ $thumbnailImg.Height }}" alt={{ $photoAlt }} />
+            </picture>
+        </a>
+    {{ else }}
+        {{ warnf "Unable to get remote resource %q" $photoUrl }}
+    {{- end }}
+{{- end -}}
