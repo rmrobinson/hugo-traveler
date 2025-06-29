@@ -1,24 +1,53 @@
 <!-- A photo is a single photo displayed with a caption underneath -->
 {{- $photoUrl := $.Get "url" }}
 {{- $photoAlt := $.Get "alt" }}
-{{- with try (resources.GetRemote $photoUrl) }}
-    {{ with .Err }}
-        {{ warnf "%s" . }}
-    {{ else with .Value }}
-        {{ $webpImg := .Process "webp" }}
-        {{ $thumbnailImg := .Resize "x400" }}
-
-        <a href="{{ $webpImg.RelPermalink }}"
-            data-pswp-width="{{ .Width }}"
-            data-pswp-height="{{ .Height }}"
-            data-pswp-webp-src="{{ $webpImg.RelPermalink }}"
-            target="_blank">
-            <picture>
-                <source srcset="{{ $webpImg.RelPermalink }}" type="image/webp" />
-                <img src="{{ $thumbnailImg.RelPermalink }}" loading="lazy" width="{{ $thumbnailImg.Width }}" height="{{ $thumbnailImg.Height }}" alt={{ $photoAlt }} />
-            </picture>
-        </a>
-    {{ else }}
-        {{ warnf "Unable to get remote resource %q" $photoUrl }}
+{{- $photoCaption := $.Get "caption" }}
+<!-- If this is within a photogallery, render it as a photoswipe child element. -->
+{{- with .Parent }}
+    {{- with try (resources.GetRemote $photoUrl) }}
+        {{- with .Err }}
+            {{ warnf "%s" . }}
+        {{- else with .Value }}
+            {{- $webpImg := .Process "webp" }}
+            {{- $thumbnailImg := .Resize "x400" }}
+<div class="pswp-gallery__item">
+    <a href="{{ $webpImg.RelPermalink }}"
+        data-pswp-width="{{ .Width }}"
+        data-pswp-height="{{ .Height }}"
+        data-pswp-webp-src="{{ $webpImg.RelPermalink }}"
+        target="_blank">
+        <picture>
+            <source srcset="{{ $webpImg.RelPermalink }}" type="image/webp" />
+            <img src="{{ $thumbnailImg.RelPermalink }}" loading="lazy" width="{{ $thumbnailImg.Width }}" height="{{ $thumbnailImg.Height }}" alt={{ $photoAlt }} />
+        </picture>
+    </a>
+    {{- if $photoCaption }}
+    <div class="pswp-caption-content">{{- $photoCaption -}}</div>
     {{- end }}
-{{- end -}}
+</div>
+        {{- else }}
+            {{ warnf "Unable to get remote resource %q" $photoUrl }}
+        {{- end }}
+    {{- end }}
+<!-- Otherwise render as a regular photo -->
+{{- else }}
+    {{- with try (resources.GetRemote $photoUrl) }}
+        {{- with .Err }}
+            {{ warnf "%s" . }}
+        {{- else with .Value }}
+            {{- $webpImg := .Process "webp" }}
+            {{- $thumbnailImg := .Resize "x400" }}
+<figure class="photo">
+    <picture>
+        <source srcset="{{ $webpImg.RelPermalink }}" type="image/webp" />
+        <img src="{{ $thumbnailImg.RelPermalink }}" loading="lazy" width="{{ $thumbnailImg.Width }}" height="{{ $thumbnailImg.Height }}" alt={{ $photoAlt }} />
+    </picture>
+    {{- if $photoCaption }}
+    <figcaption>{{- $photoCaption -}}</figcaption>
+    {{- end }}
+</figure>
+        {{- else }}
+            {{ warnf "Unable to get remote resource %q" $photoUrl }}
+        {{- end }}
+    {{- end }}
+{{- end }}

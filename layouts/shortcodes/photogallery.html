@@ -6,11 +6,17 @@
 
 <script type="module">
 import PhotoSwipeLightbox from '/photoswipe/photoswipe-lightbox.esm.js';
+import PhptoSwipeDynamicCaption from '/photoswipe/photoswipe-dynamic-caption-plugin.esm.min.js';
 
 const lightbox = new PhotoSwipeLightbox({
     gallery: '#test-gallery',
-    children: 'a',
+    childSelector: '.pswp-gallery__item',
     pswpModule: () => import('/photoswipe/photoswipe.esm.js')
+});
+const captionPlugin = new PhptoSwipeDynamicCaption(lightbox, {
+    mobileLayoutBreakpoint: 700,
+    type: 'auto',
+    mobileCaptionOverlapRatio: 1,
 });
 
 // Parse data-pswp-webp-src attribute

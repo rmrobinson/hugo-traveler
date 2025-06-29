@@ -14,8 +14,13 @@
     <link rel="stylesheet" href="{{ "css/lightbox.css" | relURL }}" />
     {{ end }}
 
+    {{ if .HasShortcode "photo" }}
+    <link rel="stylesheet" href="{{ "css/photo.css" | relURL }}" />
+    {{ end }}
+
     {{ if .HasShortcode "photogallery" }}
     <link rel="stylesheet" href="{{ "photoswipe/photoswipe.css" | relURL }}" />
+    <link rel="stylesheet" href="{{ "photoswipe/photoswipe-dynamic-caption-plugin.css" | relURL }}" />
     {{ end }}
 
     {{ if not .Parent }}
