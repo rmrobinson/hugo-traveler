@@ -6,9 +6,9 @@ theme = "hugo-traveler"
 [params]
     description = "This is the description of this site"
 
-[author]
-   Handle = "exampleHandle"
-   FirstName = "Test"
-   LastName = "Author"
-   Location = "Somewhere, CA"
-   AboutPage = "/about"
+    [params.author]
+        Handle = "exampleHandle"
+        FirstName = "Test"
+        LastName = "Author"
+        Location = "Somewhere, CA"
+        AboutPage = "/about"
