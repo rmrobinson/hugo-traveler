@@ -1,0 +1,35 @@
+{{- /*
+  A gallery contains multiple images, potentially with captions
+  The PhotoSwipe JS framework to lightbox the images and display a caption, if present.
+  An ID must be specified for the gallery in order to allow multiple to be defined on a single page.
+  There are two supported layouts:
+   - "gallery", which uses the Flickr justified layout structure to responsively display the images on the screen
+   - "row", where all images are sized to fit onto a single row.
+*/ -}}
+{{- $galleryId := $.Get "id" | replaceRE "(\\s)" "" -}}
+{{- $galleryLayout := $.Get "layout" -}}
+{{- $galleryCaption := $.Get "caption" -}}
+{{- if not $galleryId -}}
+{{- errorf "must specify an id for the gallery" -}}
+{{- end -}}
+{{- if eq $galleryLayout "gallery" -}}
+<div class="pswp-gallery photogallery" id="{{- $galleryId -}}">
+{{- else if eq $galleryLayout "row" -}}
+<div class="pswp-gallery photorow" id="{{- $galleryId -}}">
+{{- else -}}
+    {{- errorf "must specify a layout for the gallery" -}}
+{{- end -}}
+    {{ .Inner -}}
+</div>
+{{- if $galleryCaption }}
+<div class="pswp-gallery-caption-content">{{- $galleryCaption -}}</div>
+{{- end }}
+<script type="module">
+import PhotoGallery from '/js/photogallery.js';
+
+const gallery = new PhotoGallery({
+    galleryName: {{- $galleryId -}},
+    justified: {{- eq $galleryLayout "gallery" -}},
+});
+gallery.init();
+</script>

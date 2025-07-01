@@ -1,5 +1,5 @@
 <div class="lightbox">
-    {{- $id := .Get "src" | path.Base -}}
+    {{- $id := .Get "src" | path.Base }}
     <a href="#fig-{{$id}}" class="nolightbox">
         <img src="{{.Get "src"}}" alt="{{.Get "title"}}" title="{{.Get "title"}}">
         <figcaption>{{ .Get "title" -}}</figcaption>

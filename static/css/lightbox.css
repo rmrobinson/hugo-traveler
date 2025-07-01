@@ -1,0 +1,32 @@
+/* Images come with a lightbox mode. */
+.nolightbox {
+    display: block;
+    height: 100%;
+    line-height: 0;
+}
+.lightboxed {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.8);
+}
+.lightboxed img {
+    max-width: 90%;
+    max-height: 80%;
+    margin-top: 10%;
+}
+.lightboxed figcaption {
+    display: block;
+    position: relative;
+    text-align: center;
+    color: white;
+}
+.lightboxed:target {
+    outline: none;
+    display: block;
+}
