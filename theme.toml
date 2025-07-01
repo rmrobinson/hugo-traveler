@@ -5,8 +5,8 @@ description = "A travel-focused blog theme"
 homepage = "https://github.com/rmrobinson/hugo-traveler"
 tags = []
 features = []
-min_version = "0.41"
+min_version = "0.147"
 
 [author]
   name = "Robert Robinson"
-  homepage = "http://blog.rmrobinson.ca"
+  homepage = "https://blog.rmrobinson.ca"
