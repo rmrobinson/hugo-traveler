@@ -115,7 +115,6 @@ article blockquote {
     background-color: #C7DDDA;
 }
 
-
 article > figure {
     margin: 0px;
 }
@@ -235,26 +234,6 @@ figure figcaption h4 {
     font-size: 14px;
     font-weight: 700;
     line-height: 20px;
-}
-
-/* Base styling for a row of images that expand to fill the screen. */
-.photorow {
-    display: flex;
-    line-height: 0;
-    align-items: center;
-    justify-content: center;
-}
-.photorow > div {
-    margin: 0px;
-}
-.photorow img {
-    margin: 5px;
-    max-height: 35vh;
-    max-width: 100% !important;
-    height: auto !important;
-}
-.photorow figcaption {
-    display: none;
 }
 
 /* ------ Page Footer styling ------ */

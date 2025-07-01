@@ -10,7 +10,7 @@ header_image_path: "/trips/images/john-vicente-cLBsrzwoJ3w-unsplash.jpg"
 
 This is an example of a day which has a photo gallery.
 
-{{< photogallery >}}
+{{< photogallery id="day1gallery" layout="row" caption="A few pretty photos">}}
 
 {{< photo url="https://images.unsplash.com/photo-1642039673605-6c86ad03c4ed" alt="Sunrise over the ocean" caption="Sun rising along the boardwalk" >}}
 {{< photo url="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1" alt="Boat on a lake" caption="Boat on the lake with mountains in the background" >}}

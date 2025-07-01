@@ -1,14 +1,31 @@
-<!-- A gallery contains multiple images, potentially with captions, displayed full width on the screen -->
-<!-- Uses photoswipe to change between included images -->
-<div class="pswp-gallery photorow" id="test-gallery">
+<!-- A gallery contains multiple images, potentially with captions, for display as a group using the PhotoSwipe JS framework to lightbox the images and display a caption, if present.
+  An ID must be supplied to allow multiple galleries to be inserted per page.
+  There are two supported layouts: "gallery", a justified, multi-row gallery; and "row", where all images are sized to a row. -->
+{{- $galleryId := $.Get "id" | replaceRE "(\\s)" "" -}}
+{{- $galleryLayout := $.Get "layout" -}}
+{{- $galleryCaption := $.Get "caption" -}}
+{{- if not $galleryId -}}
+{{- errorf "must specify an id for the gallery" -}}
+{{- end -}}
+{{- if eq $galleryLayout "gallery" -}}
+<div class="pswp-gallery photogallery" id="{{- $galleryId -}}">
+{{- else if eq $galleryLayout "row" -}}
+<div class="pswp-gallery photorow" id="{{- $galleryId -}}">
+{{- else -}}
+{{- errorf "must specify a layout for the gallery"}}
+{{- end -}}
     {{ .Inner -}}
 </div>
+{{- if $galleryCaption -}}
+<div class="pswp-gallery-caption-content">{{- $galleryCaption -}}</div>
+{{- end -}}
 
 <script type="module">
 import PhotoGallery from '/js/photogallery.js';
 
 const gallery = new PhotoGallery({
-    gallery: '#test-gallery'
+    galleryName: {{- $galleryId -}},
+    justified: {{- eq $galleryLayout "gallery" -}},
 });
 gallery.init();
 </script>

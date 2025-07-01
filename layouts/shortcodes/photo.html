@@ -3,13 +3,13 @@
 {{- $photoAlt := $.Get "alt" }}
 {{- $photoCaption := $.Get "caption" }}
 <!-- If this is within a photogallery, render it as a photoswipe child element. -->
-{{- with .Parent }}
-    {{- with try (resources.GetRemote $photoUrl) }}
-        {{- with .Err }}
+{{- with .Parent -}}
+    {{- with try (resources.GetRemote $photoUrl) -}}
+        {{- with .Err -}}
             {{ warnf "%s" . }}
-        {{- else with .Value }}
-            {{- $webpImg := .Process "webp" }}
-            {{- $thumbnailImg := .Resize "x400" }}
+        {{- else with .Value -}}
+            {{- $webpImg := .Process "webp" -}}
+            {{- $thumbnailImg := .Resize "x400" -}}
 <div class="pswp-gallery__item">
     <a href="{{ $webpImg.RelPermalink }}"
         data-pswp-width="{{ .Width }}"
@@ -21,33 +21,33 @@
             <img src="{{ $thumbnailImg.RelPermalink }}" loading="lazy" width="{{ $thumbnailImg.Width }}" height="{{ $thumbnailImg.Height }}" alt={{ $photoAlt }} />
         </picture>
     </a>
-    {{- if $photoCaption }}
+    {{- if $photoCaption -}}
     <div class="pswp-caption-content">{{- $photoCaption -}}</div>
-    {{- end }}
+    {{- end -}}
 </div>
-        {{- else }}
+        {{- else -}}
             {{ warnf "Unable to get remote resource %q" $photoUrl }}
-        {{- end }}
-    {{- end }}
+        {{- end -}}
+    {{- end -}}
 <!-- Otherwise render as a regular photo -->
 {{- else }}
-    {{- with try (resources.GetRemote $photoUrl) }}
-        {{- with .Err }}
+    {{- with try (resources.GetRemote $photoUrl) -}}
+        {{- with .Err -}}
             {{ warnf "%s" . }}
-        {{- else with .Value }}
-            {{- $webpImg := .Process "webp" }}
-            {{- $thumbnailImg := .Resize "x400" }}
+        {{- else with .Value -}}
+            {{- $webpImg := .Process "webp" -}}
+            {{- $thumbnailImg := .Resize "x400" -}}
 <figure class="photo">
     <picture>
         <source srcset="{{ $webpImg.RelPermalink }}" type="image/webp" />
-        <img src="{{ $thumbnailImg.RelPermalink }}" loading="lazy" width="{{ $thumbnailImg.Width }}" height="{{ $thumbnailImg.Height }}" alt={{ $photoAlt }} />
+        <img src="{{ $thumbnailImg.RelPermalink }}" loading="lazy" alt={{ $photoAlt }} />
     </picture>
-    {{- if $photoCaption }}
+    {{- if $photoCaption -}}
     <figcaption>{{- $photoCaption -}}</figcaption>
-    {{- end }}
+    {{- end -}}
 </figure>
-        {{- else }}
+        {{- else -}}
             {{ warnf "Unable to get remote resource %q" $photoUrl }}
-        {{- end }}
-    {{- end }}
-{{- end }}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}

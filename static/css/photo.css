@@ -1,9 +1,9 @@
-/* Styling for photos */
+/* Styling for standalone photos */
 .photo {
     position: relative;
     text-align: center;
 }
-.photo picture {
+.photo picture img {
     max-height: 30vh;
     max-width: 100% !important;
     height: auto !important;
@@ -14,22 +14,46 @@
     line-height: 20px;
 }
 
-/* Base styling for a row of images that expand to fill the screen. */
+/* Styling for items used by both photogallery layouts */
+.pswp-gallery__item a {
+    cursor: zoom-in;
+}
+
+.pswp-gallery-caption-content {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+}
+
+/* Styling for the photogallery row layout, where a row of images that expand to fill the screen. */
 .photorow {
     display: flex;
     line-height: 0;
     align-items: center;
     justify-content: center;
+    column-gap: 10px; /* matched to the gallery view */
 }
-.photorow > div {
+.photorow .pswp-gallery__item {
     margin: 0px;
 }
 .photorow img {
-    margin: 5px;
+    object-fit: contain;
     max-height: 35vh;
     max-width: 100% !important;
     height: auto !important;
 }
 .photorow figcaption {
     display: none;
+}
+
+/* Styling for the photogallery gallery layout, using the Flickr justified layout to dynamically move entries on the screen. */
+.photogallery {
+    display: flex;
+    justify-content: center;
+}
+.photogallery picture {
+    max-height: 288;
+    max-width: 100% !important;
+    height: auto !important;
 }
