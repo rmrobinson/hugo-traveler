@@ -3,11 +3,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content = {{ .Site.Params.Author.firstname }} {{ .Site.Params.Author.lastname }}>
     <meta name="description" content = {{ .Site.Params.description }}>
+    {{ if not .Parent -}}
+    <title>{{ .Title }}</title>
+    {{ else -}}
+    <title>{{ .Parent.Title }}: {{ .Title }}</title>
+    {{- end }}
 
     <link rel="stylesheet" href="{{ "css/normalize.css" | relURL }}" />
     <link rel="stylesheet" href="{{ "css/style.css" | relURL }}" />
 
-    {{- if .HasShortcode "map" -}}
+    {{ if .HasShortcode "map" -}}
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.0/dist/maplibre-gl.css" crossorigin="anonymous">
     <script src="https://unpkg.com/maplibre-gl@4.7.0/dist/maplibre-gl.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/pmtiles@4.2.1/dist/pmtiles.js"></script>
@@ -29,11 +34,5 @@
     {{- if .HasShortcode "photogallery" -}}
     <link rel="stylesheet" href="{{ "photoswipe/photoswipe.css" | relURL }}" />
     <link rel="stylesheet" href="{{ "photoswipe/photoswipe-dynamic-caption-plugin.css" | relURL }}" />
-    {{- end -}}
-
-    {{- if not .Parent -}}
-    <title>{{ .Title }}</title>
-    {{- else -}}
-    <title>{{ .Parent.Title }}: {{ .Title }}</title>
-    {{- end -}}
+    {{- end }}
 </head>

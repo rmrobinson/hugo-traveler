@@ -25,7 +25,7 @@
     alt="{{$mapDescription}}"
 ></div>
 
-{{- if ne $entryType "" -}}
+{{- if ne $entryType "" }}
 <div class="list-entries">
 {{- $elems := slice  -}}
 
@@ -95,6 +95,7 @@ window.addEventListener("load", (event) => {
         el.style.backgroundSize = 'cover';
         el.style.display = 'block';
         el.style.border = 'none';
+        el.style.cursor = 'pointer';
         el.style.padding = 0;
         el.style.height = '35px';
         el.style.width = '35px';
@@ -128,7 +129,7 @@ window.addEventListener("load", (event) => {
     places.push({
         id: {{- $place.id -}},
         pageUrl: {{- $mapId -}},
-        imageUrl: {{- absURL $place.image_url -}},
+        imageUrl: {{- $place.image_url -}},
         type: {{- $place.type -}},
         desc: {{- $place.desc -}},
         lat: {{- $place.lat -}},
@@ -143,7 +144,7 @@ window.addEventListener("load", (event) => {
     places.push({
         id: {{- $place.id -}},
         pageUrl: {{- $page.RelPermalink -}},
-        imageUrl: {{- absURL $place.image_url -}},
+        imageUrl: {{- $place.image_url -}},
         type: {{- $place.type -}},
         desc: {{- $place.desc -}},
         lat: {{- $place.lat -}},
@@ -157,10 +158,13 @@ window.addEventListener("load", (event) => {
             markers[e.id] = new maplibregl.Marker({element: createTypeMarker(e.type, e.pageUrl)}).setLngLat([e.lon, e.lat]).addTo(map);
         } else if (e.imageUrl) {
             markers[e.id] = new maplibregl.Marker({element: createImgMarker(e.imageUrl, e.pageUrl)}).setLngLat([e.lon, e.lat]).addTo(map);
-            if (e.desc) {
-                markers[e.id].setPopup(new maplibregl.Popup().setHTML(e.desc));
-            }
+        } else {
+            return;
         }
+        if (e.desc) {
+            markers[e.id].setPopup(new maplibregl.Popup().setHTML(e.desc));
+        }
+
     })
     for (const day in placesByDay) {
         const places = placesByDay[day];
