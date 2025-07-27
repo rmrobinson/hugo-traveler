@@ -71,7 +71,7 @@ window.addEventListener("load", (event) => {
     let protocol = new pmtiles.Protocol({metadata: true});
     maplibregl.addProtocol("pmtiles", protocol.tile);
 
-    const createMarker = function(img, page) {
+    const createImgMarker = function(img, page) {
         let el = document.createElement('div');
         el.className = page;
         el.style.backgroundImage = `url(${img})`;
@@ -84,6 +84,20 @@ window.addEventListener("load", (event) => {
         el.style.padding = 0;
         el.style.height = '50px';
         el.style.width = '50px';
+        return el;
+    };
+
+    const createTypeMarker = function(type, page) {
+        let el = document.createElement('div');
+        el.className = page;
+        el.style.backgroundImage = `url(/icons/${type}.png)`;
+        el.style.backgroundPosition = 'center';
+        el.style.backgroundSize = 'cover';
+        el.style.display = 'block';
+        el.style.border = 'none';
+        el.style.padding = 0;
+        el.style.height = '35px';
+        el.style.width = '35px';
         return el;
     };
 
@@ -115,6 +129,7 @@ window.addEventListener("load", (event) => {
         id: {{- $place.id -}},
         pageUrl: {{- $mapId -}},
         imageUrl: {{- absURL $place.image_url -}},
+        type: {{- $place.type -}},
         desc: {{- $place.desc -}},
         lat: {{- $place.lat -}},
         lon: {{- $place.lon -}}
@@ -129,6 +144,7 @@ window.addEventListener("load", (event) => {
         id: {{- $place.id -}},
         pageUrl: {{- $page.RelPermalink -}},
         imageUrl: {{- absURL $place.image_url -}},
+        type: {{- $place.type -}},
         desc: {{- $place.desc -}},
         lat: {{- $place.lat -}},
         lon: {{- $place.lon -}}
@@ -137,9 +153,13 @@ window.addEventListener("load", (event) => {
     {{- end -}}
 
     places.forEach((e) => {
-        markers[e.id] = new maplibregl.Marker({element: createMarker(e.imageUrl, e.pageUrl)}).setLngLat([e.lon, e.lat]).addTo(map);
-        if (e.desc) {
-            markers[e.id].setPopup(new maplibregl.Popup().setHTML(e.desc));
+        if (e.type) {
+            markers[e.id] = new maplibregl.Marker({element: createTypeMarker(e.type, e.pageUrl)}).setLngLat([e.lon, e.lat]).addTo(map);
+        } else if (e.imageUrl) {
+            markers[e.id] = new maplibregl.Marker({element: createImgMarker(e.imageUrl, e.pageUrl)}).setLngLat([e.lon, e.lat]).addTo(map);
+            if (e.desc) {
+                markers[e.id].setPopup(new maplibregl.Popup().setHTML(e.desc));
+            }
         }
     })
     for (const day in placesByDay) {

@@ -19,6 +19,10 @@ trip:
       lat: 37.8199109
       lon: -122.4811347
       image_url: "https://upload.wikimedia.org/wikipedia/commons/b/bf/Golden_Gate_Bridge_as_seen_from_Battery_East.jpg"
+    - id: marin-headlands
+      lat: 37.8352367
+      lon: -122.5218602
+      type: hiking
 summary: "Visiting the West Coast"
 header_image_path: "https://upload.wikimedia.org/wikipedia/commons/b/bc/San_Francisco_skyline_from_Marin_Headlands.jpg"
 ---
