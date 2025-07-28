@@ -8,15 +8,14 @@
 {{- $mapDescription := default "" (.Get "description") -}}
 {{- $reverse := default false (.Get "reverse") -}}
 {{- $entryType := default "" (.Get "entryType") -}}
-<div
-    id='map_{{- $mapId -}}'
-    class="map"
+<div id='map_{{- $mapId -}}'
+    class="svgmap"
     title="{{$mapDescription}}"
     alt="{{$mapDescription}}"
 >
-<img src="{{ $mapPath | absURL }}" onload="SVGInject(this)"/>;
+    <img src="{{ $mapPath | absURL }}" onload="SVGInject(this)"/>;
 </div>
-{{- if ne $entryType "" -}}
+{{ if ne $entryType "" }}
 <div class="list-entries">
 {{- $elems := slice  -}}
 
@@ -30,7 +29,7 @@
 {{- $elems = $elems.Reverse -}}
 {{- end -}}
 
-{{- range $elems -}}
+{{ range $elems }}
 <div class="list-entry"
     onmouseover="selectElements({{ .Params.trip.visited_labels }}, {{ .Parent.Params.map.highlight_element_colour }}, {{ .Parent.Params.map.set_stroke_and_fill }})"
     onmouseout="deselectElements({{ .Params.trip.visited_labels }}, {{ .Parent.Params.map.set_stroke_and_fill}})">
@@ -42,9 +41,9 @@
     </div>
     </a>
 </div>
-{{- end -}}
+{{- end }}
 </div>
-{{- end -}}
+{{- end }}
 
 <script type="text/javascript">
 SVGInject.setOptions({makeIdsUnique: false});

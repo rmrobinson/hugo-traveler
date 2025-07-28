@@ -17,15 +17,14 @@
 {{- $reverse := default false (.Get "reverse") -}}
 {{- $entryType := default "" (.Get "entryType") -}}
 
-<div
-    id='map_{{- $mapId -}}'
+<div id='map_{{- $mapId -}}'
     class="libremapgl-map"
     style="width: {{ $mapWidth }}; height: {{ $mapHeight }}; margin: {{ $mapMargin }}"
     title="{{$mapDescription}}"
     alt="{{$mapDescription}}"
-></div>
-
-{{- if ne $entryType "" }}
+>
+</div>
+{{ if ne $entryType "" }}
 <div class="list-entries">
 {{- $elems := slice  -}}
 
