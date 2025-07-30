@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
-    {{- partial "head.html" . -}}
-    <body>
-    <div id="fullpage">
-        {{- partial "site_header.html" . -}}
-        {{- partial "page_header.html" . -}}
-        {{- block "main" . }}{{- end }}
-        {{- partial "page_footer.html" . -}}
-        {{- partial "site_footer.html" . -}}
-    </div>
-    </body>
+{{ partial "head.html" . -}}
+<body>
+<div id="fullpage">
+{{ partial "site_header.html" . }}
+{{ partial "page_header.html" . }}
+{{ block "main" . }}{{ end }}
+{{ partial "page_footer.html" . }}
+{{ partial "site_footer.html" . }}
+</div>
+</body>
 </html>

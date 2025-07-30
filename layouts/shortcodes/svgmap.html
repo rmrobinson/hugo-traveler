@@ -1,0 +1,93 @@
+{{- if not (.Get "id") -}}
+{{- errorf "must specify an id for the map" -}}
+{{- else if not (.Get "path") -}}
+{{- errorf "must specify a path for the map" -}}
+{{- end -}}
+{{- $mapId := default "" (.Get "id") -}}
+{{- $mapPath := default "" (.Get "path") -}}
+{{- $mapDescription := default "" (.Get "description") -}}
+{{- $reverse := default false (.Get "reverse") -}}
+{{- $entryType := default "" (.Get "entryType") -}}
+<div id='map_{{- $mapId -}}'
+    class="svgmap"
+    title="{{$mapDescription}}"
+    alt="{{$mapDescription}}"
+>
+    <img src="{{ $mapPath | absURL }}" onload="SVGInject(this)"/>;
+</div>
+{{ if ne $entryType "" }}
+<div class="trip-entries">
+{{- $elems := slice  -}}
+
+{{- if eq $entryType "page" -}}
+{{- $elems = .Page.Pages.ByDate -}}
+{{- else if eq $entryType "section" -}}
+{{- $elems = .Page.Sections.ByDate -}}
+{{- end -}}
+
+{{- if eq $reverse true -}}
+{{- $elems = $elems.Reverse -}}
+{{- end -}}
+
+{{ range $elems }}
+<div class="trip-entry"
+    onmouseover="selectElements({{ .Params.trip.visited_labels }}, {{ .Parent.Params.map.highlight_element_colour }}, {{ .Parent.Params.map.set_stroke_and_fill }})"
+    onmouseout="deselectElements({{ .Params.trip.visited_labels }}, {{ .Parent.Params.map.set_stroke_and_fill}})">
+    <a href='{{ .Permalink }}'>
+{{- with try (resources.GetRemote (absURL .Params.header_image_path) ) -}}
+    {{- with .Err -}}
+        {{ warnf "%s" . }}
+    {{- else with .Value -}}
+        {{- $webpImg := .Process "webp" -}}
+        {{- $thumbnailImg := .Resize "x400" -}}
+    <picture>
+        <source srcset="{{ $webpImg.RelPermalink }}" type="image/webp" />
+        <img src="{{ $thumbnailImg.RelPermalink }}" loading="lazy" alt={{ .Title }} />
+    </picture>
+    {{- else -}}
+        {{ warnf "Unable to get remote resource %q" .Params.header_image_path -}}
+    {{- end -}}
+{{- end -}}
+    <div class="trip-entry-content">
+        <h4>{{ .Title }}</h4>
+        <p>{{ .Summary }}</p>
+    </div>
+    </a>
+</div>
+{{- end }}
+</div>
+{{- end }}
+
+<script type="text/javascript">
+SVGInject.setOptions({makeIdsUnique: false});
+var defaultStrokeValues = {};
+var defaultFillValues = {};
+
+function selectElements(ids, selectedColour, setStrokeAndFill) {
+    ids.forEach(function (id) {
+        elem = document.getElementById(id)
+        if (elem === null) {
+            return;
+        }
+        if (setStrokeAndFill) {
+            defaultStrokeValues[id] = elem.getAttribute("stroke");
+            elem.setAttribute("stroke", selectedColour);
+        }
+        defaultFillValues[id] = elem.getAttribute("style");
+        elem.setAttribute("style", "fill:" + selectedColour);
+    });
+};
+function deselectElements(ids, setStrokeAndFill) {
+    ids.forEach(function (id) {
+        elem = document.getElementById(id);
+        if (elem === null) {
+            return;
+        }
+        var defaultStrokeValue = defaultStrokeValues[id];
+        if (setStrokeAndFill && defaultStrokeValue !== "") {
+            elem.setAttribute("stroke", defaultStrokeValue);
+        }
+        elem.setAttribute("style", defaultFillValues[id]);
+    });
+};
+</script>

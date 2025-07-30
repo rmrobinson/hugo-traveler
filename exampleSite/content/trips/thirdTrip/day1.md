@@ -1,11 +1,12 @@
 ---
 date: "2015-06-01"
 title: "Welcome to Cali!"
-trip:
-  visited_labels:
-  - "CA"
 summary: "Visiting San Francisco"
-header_image_path: "/trips/images/matthias-koch-drXP4PAy2eo-unsplash.jpg"
+trip:
+  places:
+  places_visited:
+    - cas
+header_image_path: "https://www.calacademy.org/sites/default/files/styles/manual_crop_standard_960x540/public/uploads/images/cas22-155-layers-small.jpg"
 ---
 
 This is where content for the first day can be found.

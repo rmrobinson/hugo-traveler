@@ -1,0 +1,195 @@
+{{- if not (.Get "id") -}}
+{{- errorf "must specify an id for the map" -}}
+{{- else if not (.Get "path") -}}
+{{- errorf "must specify a path for the map" -}}
+{{- end -}}
+
+{{- $mapId := default "" (.Get "id") -}}
+{{- $mapPath := default "" (.Get "path") -}}
+{{- $mapPMPath := (print "pmtiles://" $mapPath) -}}
+{{- $mapLat := default $.Page.Params.map.lat (.Get "lat") -}}
+{{- $mapLon := default $.Page.Params.map.lon (.Get "lon") -}}
+{{- $mapZoom := default $.Page.Params.map.zoom (.Get "zoom") -}}
+{{- $mapHeight := default "500px" (.Get "height") -}}
+{{- $mapWidth := default "100%" (.Get "width") -}}
+{{- $mapMargin := default "0px" (.Get "margin") -}}
+{{- $mapDescription := default "" (.Get "description") -}}
+{{- $reverse := default false (.Get "reverse") -}}
+{{- $entryType := default "" (.Get "entryType") -}}
+
+<div id='map_{{- $mapId -}}'
+    class="libremapgl-map"
+    style="width: {{ $mapWidth }}; height: {{ $mapHeight }}; margin: {{ $mapMargin }}"
+    title="{{$mapDescription}}"
+    alt="{{$mapDescription}}"
+>
+</div>
+{{ if ne $entryType "" }}
+<div class="trip-entries">
+{{- $elems := slice  -}}
+
+{{- if eq $entryType "page" -}}
+{{- $elems = .Page.Pages.ByDate -}}
+{{- else if eq $entryType "section" -}}
+{{- $elems = .Page.Sections.ByDate -}}
+{{- end -}}
+
+{{- if eq $reverse true -}}
+{{- $elems = $elems.Reverse -}}
+{{- end -}}
+
+{{ range $elems }}
+<div class="trip-entry"
+    onmouseover="highlightEntry({{.RelPermalink}})"
+    onmouseout="unhighlightEntry({{.RelPermalink}})">
+    <a href='{{ .Permalink }}'>
+{{- with try (resources.GetRemote (absURL .Params.header_image_path) ) -}}
+    {{- with .Err -}}
+        {{ warnf "%s" . }}
+    {{- else with .Value -}}
+        {{- $webpImg := .Process "webp" -}}
+        {{- $thumbnailImg := .Resize "x400" -}}
+    <picture>
+        <source srcset="{{ $webpImg.RelPermalink }}" type="image/webp" />
+        <img src="{{ $thumbnailImg.RelPermalink }}" loading="lazy" alt={{ .Title }} />
+    </picture>
+    {{- else -}}
+        {{ warnf "Unable to get remote resource %q" .Params.header_image_path -}}
+    {{- end -}}
+{{- end -}}
+    <div class="trip-entry-content">
+        <h4>{{ .Title }}</h4>
+        <p>{{ .Summary }}</p>
+    </div>
+    </a>
+</div>
+{{- end }}
+</div>
+{{- end }}
+
+<script type="text/javascript">
+function highlightEntry(pageLink) {
+    Array.from(document.getElementsByClassName(pageLink)).forEach(marker => {
+        marker.style.boxShadow = "0px 0px 15px 10px rgba(7,47,38,1)";
+    });
+};
+function unhighlightEntry(pageLink) {
+    Array.from(document.getElementsByClassName(pageLink)).forEach(marker => {
+        marker.style.boxShadow = '';
+    })
+};
+
+window.addEventListener("load", (event) => {
+    let protocol = new pmtiles.Protocol({metadata: true});
+    maplibregl.addProtocol("pmtiles", protocol.tile);
+
+    const createImgMarker = function(img, page) {
+        let el = document.createElement('div');
+        el.className = page;
+        el.style.backgroundImage = `url(${img})`;
+        el.style.backgroundPosition = 'center';
+        el.style.backgroundSize = 'cover';
+        el.style.display = 'block';
+        el.style.border = 'none';
+        el.style.borderRadius = '50%';
+        el.style.cursor = 'pointer';
+        el.style.padding = 0;
+        el.style.height = '50px';
+        el.style.width = '50px';
+        return el;
+    };
+
+    const createTypeMarker = function(type, page) {
+        let el = document.createElement('div');
+        el.className = page;
+        el.style.backgroundImage = `url(/icons/${type}.png)`;
+        el.style.backgroundPosition = 'center';
+        el.style.backgroundSize = 'cover';
+        el.style.display = 'block';
+        el.style.border = 'none';
+        el.style.cursor = 'pointer';
+        el.style.padding = 0;
+        el.style.height = '35px';
+        el.style.width = '35px';
+        return el;
+    };
+
+    const map = new maplibregl.Map({
+        container: 'map_{{- $mapId -}}',
+        zoom: {{ $mapZoom -}},
+        center: [{{- $mapLon -}}, {{- $mapLat -}}],
+        style: {
+            version: 8,
+            glyphs:'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf',
+            sprite: "https://protomaps.github.io/basemaps-assets/sprites/v4/light",
+            sources: {
+                "{{- $mapId -}}": {
+                    type: "vector",
+                    url: {{- $mapPMPath -}},
+                },
+            },
+            layers: protomaps_themes_base.default("{{- $mapId -}}","light"),
+        }
+    });
+
+    const places = [];
+    const placesByDay = {};
+    const markers = {};
+    {{/* These are the places which are common across the trip */}}
+    {{ with .Page.Params.trip -}}
+    {{- range $place := .places }}
+    places.push({
+        id: {{- $place.id -}},
+        pageUrl: {{- $mapId -}},
+        imageUrl: {{- $place.image_url -}},
+        type: {{- $place.type -}},
+        desc: {{- $place.desc -}},
+        lat: {{- $place.lat -}},
+        lon: {{- $place.lon -}}
+    });
+    {{- end -}}
+    {{- end -}}
+    {{/* These are the places which are unique to a given day */}}
+    {{ range $page := .Page.Pages -}}
+    placesByDay[{{- $page.RelPermalink -}}] = {{ $page.Params.trip.places_visited -}};
+    {{ range $place := $page.Params.trip.places -}}
+    places.push({
+        id: {{- $place.id -}},
+        pageUrl: {{- $page.RelPermalink -}},
+        imageUrl: {{- $place.image_url -}},
+        type: {{- $place.type -}},
+        desc: {{- $place.desc -}},
+        lat: {{- $place.lat -}},
+        lon: {{- $place.lon -}}
+    });
+    {{- end -}}
+    {{- end -}}
+
+    places.forEach((e) => {
+        if (e.type) {
+            markers[e.id] = new maplibregl.Marker({element: createTypeMarker(e.type, e.pageUrl)}).setLngLat([e.lon, e.lat]).addTo(map);
+        } else if (e.imageUrl) {
+            markers[e.id] = new maplibregl.Marker({element: createImgMarker(e.imageUrl, e.pageUrl)}).setLngLat([e.lon, e.lat]).addTo(map);
+        } else {
+            return;
+        }
+        if (e.desc) {
+            markers[e.id].setPopup(new maplibregl.Popup().setHTML(e.desc));
+        }
+
+    })
+    for (const day in placesByDay) {
+        const places = placesByDay[day];
+        if (!places) {
+            continue;
+        } else if (!Array.isArray(places)) {
+            console.log(`visited places for day ${day} is not an array, skipping`);
+        }
+        places.forEach((e) => {
+            if (markers[e]) {
+                markers[e]._element.classList.add(day);
+            }
+        });
+    }
+});
+</script>

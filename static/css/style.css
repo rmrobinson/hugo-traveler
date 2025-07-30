@@ -124,37 +124,26 @@ article > figure h4 {
     margin-bottom: 0px;
 }
 
-.list-map {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-}
-
-.list-map > div {
-    flex: 1;
-}
-
-.map {
+.svgmap {
     display: flex;
     flex-direction: row;
     width: 100%;
 }
-.list-entries {
+
+.svgmap svg {
+    width: 100%;
+    height: 50vh;
+    margin: 1em;
+}
+
+.trip-entries {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
 }
 
-.map svg {
-    width: 100%;
-    height: 50vh;
-    margin: 1em;
-}
-
-.list-entry {
+.trip-entry {
     height: 180px;
     position: relative;
     margin: 5px;
@@ -168,13 +157,13 @@ article > figure h4 {
   We override the image to have it 'fill' out the above list entry if it isn't a perfect 4:3 aspect ratio
   This will crop the image - this is preferrable to having whitespace in the image.
 */
-.list-entry img {
+.trip-entry picture img {
     object-fit: cover;
     height: 100%;
 }
 
 @media only screen and (max-width:600px) {
-    .list-entry {
+    .trip-entry {
         height: 90px;
         position: relative;
         margin: 5px;
@@ -183,22 +172,22 @@ article > figure h4 {
         max-width: 120px;
         overflow: hidden;
     }
-    .list-entry-content p {
+    .trip-entry-content p {
         display: none;
     }   
 }
 
-.list-entry a {
+.trip-entry a {
     display: block;
     height: 100%;
 }
-.list-entry img {
+.trip-entry picture {
     max-width: 100%;
     max-height: 100%;
     position: relative;
     border-radius: 8px;
 }
-.list-entry-content {
+.trip-entry-content {
     float: left;
     position: absolute;
     left: 0px;
@@ -208,13 +197,14 @@ article > figure h4 {
     color: white;
     text-shadow: 2px 2px 4px #000000;
 }
-.list-entry-content h4 {
+.trip-entry-content h4 {
     margin: 0px;
     font-size: 16px;
 }
-.list-entry-content p {
+.trip-entry-content p {
     margin-top: 0px;
     margin-bottom: 5px;
+    padding-left: 0em;
     font-weight: 200;
     font-size: 14px;
 }
