@@ -16,7 +16,7 @@
     <img src="{{ $mapPath | absURL }}" onload="SVGInject(this)"/>;
 </div>
 {{ if ne $entryType "" }}
-<div class="list-entries">
+<div class="trip-entries">
 {{- $elems := slice  -}}
 
 {{- if eq $entryType "page" -}}
@@ -30,12 +30,25 @@
 {{- end -}}
 
 {{ range $elems }}
-<div class="list-entry"
+<div class="trip-entry"
     onmouseover="selectElements({{ .Params.trip.visited_labels }}, {{ .Parent.Params.map.highlight_element_colour }}, {{ .Parent.Params.map.set_stroke_and_fill }})"
     onmouseout="deselectElements({{ .Params.trip.visited_labels }}, {{ .Parent.Params.map.set_stroke_and_fill}})">
     <a href='{{ .Permalink }}'>
-    <img src="{{ .Params.header_image_path }}" />
-    <div class="list-entry-content">
+{{- with try (resources.GetRemote (absURL .Params.header_image_path) ) -}}
+    {{- with .Err -}}
+        {{ warnf "%s" . }}
+    {{- else with .Value -}}
+        {{- $webpImg := .Process "webp" -}}
+        {{- $thumbnailImg := .Resize "x400" -}}
+    <picture>
+        <source srcset="{{ $webpImg.RelPermalink }}" type="image/webp" />
+        <img src="{{ $thumbnailImg.RelPermalink }}" loading="lazy" alt={{ .Title }} />
+    </picture>
+    {{- else -}}
+        {{ warnf "Unable to get remote resource %q" .Params.header_image_path -}}
+    {{- end -}}
+{{- end -}}
+    <div class="trip-entry-content">
         <h4>{{ .Title }}</h4>
         <p>{{ .Summary }}</p>
     </div>
