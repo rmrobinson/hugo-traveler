@@ -2,6 +2,7 @@
 date: "2018-06-03"
 title: "Day 3"
 trip:
+  mapid: "eswatini"
   visited_labels:
   - "ZAF1189"
 summary: "Heading East"

@@ -2,10 +2,6 @@
 title: '{{ replace .File.ContentBaseName `-` ` ` | title }}'
 summary: "<brief summary of this trip>"
 header_image_path: "<url to image showing for this trip>"
-map:
-  lat: "<latitude of map centre>"
-  lon: "<longitude of map centre>"
-  zoom: "<zoom level of map>"
 trip:
   start_date: '{{ time.Now.Format "2006-01-02" }}'
   end_date: '{{ time.Now.Format "2006-01-02" }}'

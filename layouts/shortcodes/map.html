@@ -7,16 +7,16 @@
 {{- $mapId := default "" (.Get "id") -}}
 {{- $mapPath := default "" (.Get "path") -}}
 {{- $mapPMPath := (print "pmtiles://" $mapPath) -}}
-{{- $mapLat := default $.Page.Params.map.lat (.Get "lat") -}}
-{{- $mapLon := default $.Page.Params.map.lon (.Get "lon") -}}
-{{- $mapZoom := default $.Page.Params.map.zoom (.Get "zoom") -}}
+{{- $mapLat := default "0" (.Get "lat") -}}
+{{- $mapLon := default "0" (.Get "lon") -}}
+{{- $mapZoom := default "10" (.Get "zoom") -}}
 {{- $mapHeight := default "500px" (.Get "height") -}}
 {{- $mapWidth := default "100%" (.Get "width") -}}
 {{- $mapMargin := default "0px" (.Get "margin") -}}
 {{- $mapDescription := default "" (.Get "description") -}}
 {{- $reverse := default false (.Get "reverse") -}}
 {{- $entryType := default "" (.Get "entryType") -}}
-
+<div class="column">
 <div id='map_{{- $mapId -}}'
     class="libremapgl-map"
     style="width: {{ $mapWidth }}; height: {{ $mapHeight }}; margin: {{ $mapMargin }}"
@@ -39,6 +39,7 @@
 {{- end -}}
 
 {{ range $elems }}
+{{ if or (eq .Params.trip.mapid $mapId) (not (isset .Params.trip "mapid")) -}}
 <div class="trip-entry"
     onmouseover="highlightEntry({{.RelPermalink}})"
     onmouseout="unhighlightEntry({{.RelPermalink}})">
@@ -64,8 +65,10 @@
     </a>
 </div>
 {{- end }}
+{{- end }}
 </div>
 {{- end }}
+</div>
 
 <script type="text/javascript">
 function highlightEntry(pageLink) {

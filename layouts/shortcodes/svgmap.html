@@ -6,14 +6,17 @@
 {{- $mapId := default "" (.Get "id") -}}
 {{- $mapPath := default "" (.Get "path") -}}
 {{- $mapDescription := default "" (.Get "description") -}}
+{{- $mapHighlightColour := default "#C7DDDA" (.Get "highlightColour") -}}
+{{- $mapSetStrokeAndFill := default false (.Get "setStrokeAndFill") -}}
 {{- $reverse := default false (.Get "reverse") -}}
 {{- $entryType := default "" (.Get "entryType") -}}
+<div class="column">
 <div id='map_{{- $mapId -}}'
     class="svgmap"
     title="{{$mapDescription}}"
     alt="{{$mapDescription}}"
 >
-    <img src="{{ $mapPath | absURL }}" onload="SVGInject(this)"/>;
+    <img src="{{ $mapPath | absURL }}" onload="SVGInject(this)"/>
 </div>
 {{ if ne $entryType "" }}
 <div class="trip-entries">
@@ -30,9 +33,10 @@
 {{- end -}}
 
 {{ range $elems }}
+{{ if or (eq .Params.trip.mapid $mapId) (not (isset .Params.trip "mapid")) -}}
 <div class="trip-entry"
-    onmouseover="selectElements({{ .Params.trip.visited_labels }}, {{ .Parent.Params.map.highlight_element_colour }}, {{ .Parent.Params.map.set_stroke_and_fill }})"
-    onmouseout="deselectElements({{ .Params.trip.visited_labels }}, {{ .Parent.Params.map.set_stroke_and_fill}})">
+    onmouseover="selectElements({{- .Params.trip.visited_labels -}}, {{- $mapHighlightColour -}}, {{- $mapSetStrokeAndFill -}})"
+    onmouseout="deselectElements({{- .Params.trip.visited_labels -}}, {{- $mapSetStrokeAndFill -}})">
     <a href='{{ .Permalink }}'>
 {{- with try (resources.GetRemote (absURL .Params.header_image_path) ) -}}
     {{- with .Err -}}
@@ -55,8 +59,10 @@
     </a>
 </div>
 {{- end }}
+{{- end }}
 </div>
 {{- end }}
+</div>
 
 <script type="text/javascript">
 SVGInject.setOptions({makeIdsUnique: false});
