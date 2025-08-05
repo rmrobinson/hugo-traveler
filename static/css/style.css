@@ -124,6 +124,20 @@ article > figure h4 {
     margin-bottom: 0px;
 }
 
+.columns {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+}
+
 .svgmap {
     display: flex;
     flex-direction: row;

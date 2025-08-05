@@ -2,6 +2,7 @@
 date: "2018-06-02"
 title: "Day 2"
 trip:
+  mapid: "southafrica"
   visited_labels:
   - "ZAF1926"
 summary: "Eastern Cape"

@@ -2,6 +2,7 @@
 date: "2018-06-01"
 title: "Day 1"
 trip:
+  mapid: "southafrica"
   visited_labels:
   - "ZAF1189"
 summary: "Seeing Cape Town"
