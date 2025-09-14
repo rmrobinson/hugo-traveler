@@ -103,6 +103,7 @@ article h4 {
 article p {
     max-width: 750px;
     margin: 0 auto;
+    margin-top: 1em;
     padding-bottom: 1em;
     padding-left: 3em;
     padding-right: 3em;
@@ -117,11 +118,11 @@ article blockquote {
 
 article > figure {
     margin: 0px;
+    margin-bottom: 1em;
 }
 
 article > figure h4 {
     margin-top: 1em;
-    margin-bottom: 0px;
 }
 
 .columns {
